@@ -3,6 +3,10 @@
 import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
+import { DM_Sans } from "next/font/google"
+import { LucideSend } from "lucide-react"
+
+const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "700"] })
 
 export default function AIAssistant() {
   const [messages, setMessages] = useState([])
@@ -45,31 +49,31 @@ export default function AIAssistant() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0F172A] p-6">
+    <div className={`${dmSans.className} min-h-screen flex items-center justify-center bg-blue-50 px-6`}>
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
+        initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-2xl bg-[#1E293B] rounded-xl overflow-hidden shadow-xl"
+        className="w-full max-w-3xl bg-white rounded-2xl shadow-xl border border-blue-100"
       >
         {/* Header */}
         <motion.div
-          initial={{ y: -50 }}
-          animate={{ y: 0 }}
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2, type: "spring", stiffness: 120 }}
-          className="bg-blue-600 p-4 flex items-center space-x-4 rounded-t-xl"
+          className="bg-blue-500 text-white p-5 flex items-center space-x-4 rounded-t-2xl"
         >
-          <div className="relative w-12 h-12">
+          <div className="relative w-14 h-14">
             <Image src="/images/bot.png" alt="AI Avatar" layout="fill" className="rounded-full" />
           </div>
           <div>
-            <h1 className="text-lg font-semibold text-white">Lily, Your AI Assistant</h1>
-            <p className="text-gray-200 text-sm">Powered by AI</p>
+            <h1 className="text-lg font-semibold">Lily, Your AI Tutor</h1>
+            <p className="text-sm text-blue-100">Powered by Gemini</p>
           </div>
         </motion.div>
 
         {/* Chat messages */}
-        <div className="h-[55vh] overflow-y-auto p-6 space-y-4">
+        <div className="h-[60vh] overflow-y-auto p-6 space-y-4 bg-blue-50">
           <AnimatePresence>
             {messages.map((msg, index) => (
               <motion.div
@@ -81,8 +85,10 @@ export default function AIAssistant() {
                 className={`flex ${msg.sender === "ai" ? "justify-start" : "justify-end"}`}
               >
                 <div
-                  className={`max-w-[75%] px-4 py-3 rounded-lg ${
-                    msg.sender === "ai" ? "bg-blue-600 text-white" : "bg-[#334155] text-white"
+                  className={`max-w-[75%] px-4 py-3 rounded-xl shadow ${
+                    msg.sender === "ai"
+                      ? "bg-blue-500 text-white rounded-bl-none"
+                      : "bg-blue-200 text-blue-900 rounded-br-none"
                   }`}
                 >
                   <p className="break-words">{msg.text}</p>
@@ -99,17 +105,17 @@ export default function AIAssistant() {
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6 }}
-                className="w-2 h-2 bg-blue-600 rounded-full"
+                className="w-2 h-2 bg-blue-500 rounded-full"
               />
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0.2 }}
-                className="w-2 h-2 bg-blue-600 rounded-full"
+                className="w-2 h-2 bg-blue-500 rounded-full"
               />
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ repeat: Number.POSITIVE_INFINITY, duration: 0.6, delay: 0.4 }}
-                className="w-2 h-2 bg-blue-600 rounded-full"
+                className="w-2 h-2 bg-blue-500 rounded-full"
               />
             </motion.div>
           )}
@@ -118,10 +124,10 @@ export default function AIAssistant() {
 
         {/* Input section */}
         <motion.div
-          initial={{ y: 50 }}
-          animate={{ y: 0 }}
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4, type: "spring", stiffness: 120 }}
-          className="p-6 bg-[#1E293B] border-t border-blue-600"
+          className="p-6 bg-white border-t border-blue-100"
         >
           <div className="relative">
             <input
@@ -129,17 +135,17 @@ export default function AIAssistant() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-              className="w-full p-4 bg-[#1E293B] rounded-full border border-blue-600 focus:ring-2 focus:ring-blue-600 text-white placeholder-gray-400 pr-24"
+              className="w-full p-4 bg-white rounded-full border border-blue-300 focus:ring-2 focus:ring-blue-500 text-blue-900 placeholder-gray-400 pr-14 shadow-sm"
               placeholder="Type your message..."
             />
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={sendMessage}
-              className="absolute right-2 top-2 bg-blue-600 px-6 py-2 rounded-full font-medium text-white transition-colors hover:bg-blue-500"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-blue-500 p-3 rounded-full text-white transition hover:bg-blue-600"
               disabled={isLoading}
             >
-              Send
+              <LucideSend className="w-5 h-5" />
             </motion.button>
           </div>
         </motion.div>
