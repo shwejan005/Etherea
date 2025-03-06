@@ -23,6 +23,10 @@ const Header = async () => {
 
         <div className='flex items-center justify-center gap-4'>
           <ModeToggle />
+
+          <Link href='/notes'>
+            Notes
+          </Link>
           
           <SignedOut>
             <SignInButton forceRedirectUrl='/onboarding'>
