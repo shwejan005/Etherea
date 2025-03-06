@@ -1,33 +1,35 @@
 import { League_Spartan } from "next/font/google";
 import "./globals.css";
-import ModeToggle from "@/components/ModeToggle";
+import { dark } from "@clerk/themes";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const leagueSpartan = League_Spartan({
   subsets: ["latin"],
-})
+});
 
-export const metadata = {
-  title: "Etherea",
-  description: "A mindset or focus that feels light and effortless",
-};
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${leagueSpartan.className} antialiased`}
-      >
-      <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+    <ClerkProvider appearance={{
+      baseTheme: dark,
+    }}>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`${leagueSpartan.className} antialiased`}
         >
-          <ModeToggle />
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+          <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+          >
+            <main className="min-h-screen">
+              {children}
+            </main>
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
